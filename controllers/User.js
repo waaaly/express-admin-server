@@ -21,11 +21,11 @@ const userController = {
 				if(err){
 					console.log(err)
 					if(err.code==11000){
-						res.json("该用户名已被注册！")
+						res.json(response(-1,"该用户名已被注册！",user))
 					}
 				}else{
 					console.log(user)
-					res.json(user)
+					res.json(response(1,"注册成功，请您登录！",user))
 				}
 			})
 		}).catch(err=>{
@@ -36,6 +36,7 @@ const userController = {
 	//用户登录
 	login(req,res){
 		const body = req.query;
+		console.log(body)
 		User.findOne({name:body.name},(err,user)=>{
 			console.log(err,user)
 			if(!user){
