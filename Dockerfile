@@ -2,7 +2,7 @@ FROM node:10
 WORKDIR /usr/src/app
 COPY package.json ./
 RUN npm config set registry http://registry.npm.taobao.org && npm install
-COPY ../
+COPY ./ ./
 #设置环境变量
 # ENV NODE_ENV=production
 # ENV MONGO_URI=mongodb://db:27017/vue-admin
