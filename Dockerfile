@@ -1,6 +1,6 @@
 FROM node:10
 WORKDIR /usr/src/app
-COPY package.json
+COPY package.json ./
 RUN npm config set registry http://registry.npm.taobao.org && npm install
 COPY ../
 #设置环境变量
