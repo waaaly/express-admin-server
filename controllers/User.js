@@ -1,4 +1,4 @@
-const {User} = require('../model/index.js')
+const {User} = require('../model/mongodb/index.js')
 
 function  response(code,msg,userInfo={}) {
 	return {
