@@ -1,4 +1,4 @@
-const {User} = require('../model/mongodb/index.js')
+const {UserAdmin} = require('../../model/mongodb/index.js')
 
 function  response(code,msg,userInfo={}) {
 	return {
@@ -13,7 +13,7 @@ const userController = {
 		//获取请求体携带的body参数
 		const body = req.body;
 		//根据user模型创建新的user document
-		const userDoc = new User(body);
+		const userDoc = new UserAdmin(body);
 		//得到数据之后先校验，通过校验才保存
 		userDoc.validate().then(()=>{		
 			//执行save语句将新用户保存到数据库
@@ -35,15 +35,15 @@ const userController = {
 	},
 	//用户登录
 	login(req,res){
-		const body = req.query;
-		console.log(body)
-		User.findOne({name:body.name},(err,user)=>{
+		const query = req.query;
+		console.log(query)
+		UserAdmin.findOne({name:query.name},(err,user)=>{
 			console.log(err,user)
 			if(!user){
 				res.json(response(0,"该用户尚未注册！"))
 			}else{
-				if(user.pwd === body.pwd){
-					User.findByIdAndUpdate(user._id,{$set:{loginTime:Date.now()}},(err,data)=>{
+				if(user.pwd === query.pwd){
+					UserAdmin.findByIdAndUpdate(user._id,{$set:{loginTime:Date.now()}},(err,data)=>{
 						res.json(response(1,"登录成功！",data))
 					})
 				}else{

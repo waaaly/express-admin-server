@@ -3,19 +3,28 @@ var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
-const mongoose = require('mongoose')
-const DBUrl = `mongodb://localhost:27017/vue-admin`
+
+var mongoose = require('mongoose');
 const option = {
 	 useNewUrlParser: true,
 	 useUnifiedTopology: true 
 }
+//连接mogondb
+mongoose.connect(`mongodb://localhost:27017/vue-blog`,
+	option,(err,db)=>{
+		if(err){
+			console.error(err)
+		}else{
+			console.log(`已成功连上数据库：${db.name}`)
+		}
+})
 const cors = require('cors')
 
 
 var indexRouter = require('./routes/index');
-var usersRouter = require('./routes/users');
-var apiRouter = require('./routes/api');
-
+var adminApiRouter = require('./routes/adminApi');
+var chatApiRouter = require('./routes/chatApi');
+var blogApiRouter = require('./routes/blogApi');
 var app = express();
 
 // view engine setup
@@ -28,14 +37,7 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-//连接mogondb
-mongoose.connect(DBUrl,option,(err,db)=>{
-	if(err){
-		console.error(err)
-	}else{
-		console.log(`已成功连上数据库：${db.name}`)
-	}
-})
+
 
 //允许跨域访问
 app.use(cors());
@@ -56,8 +58,9 @@ app.use(cors());
 // });
 
 app.use('/', indexRouter);
-app.use('/users', usersRouter);
-app.use('/api/v1',apiRouter);
+app.use('/api/admin',adminApiRouter);
+app.use('/api/webchat',chatApiRouter);
+app.use('/api/blog',blogApiRouter);
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
   next(createError(404));
