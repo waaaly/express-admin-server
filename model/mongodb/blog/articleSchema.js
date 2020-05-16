@@ -31,11 +31,10 @@ const articleSchema = Schema({
 		default:0,
 	},
 	createDate:{
-		type:Date,
-		default: Date.now()
+		type:String
 	},
 	modifyDate:{
-		type:Date,
+		type:String
 	}
 })
 
